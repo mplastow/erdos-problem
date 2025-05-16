@@ -1,0 +1,14 @@
+name = "erdos-problem"
+version = "0.1.0"
+defaultTargets = ["erdos-problem"]
+
+[[lean_lib]]
+name = "ErdosProblem"
+
+[[lean_exe]]
+name = "erdos-problem"
+root = "Main"
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"

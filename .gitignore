@@ -1,12 +1,8 @@
 lean/.lake
 
-# Binary file
+# C++
+.vscode
 cpp/erdos
 
 # Python virtual env
-python/bin
-python/include
-python/lib
-python/lib64
-python/share
-python/pyvenv.cfg
+.venv
