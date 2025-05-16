@@ -6,16 +6,21 @@ The C++ program `erdos` generates and caches prime numbers at program startup fo
 The easiest way to interact with the program is by treating it like a script: edit the variables indicated by the `EDIT` comments in `main()`, then build and run.
 
 ### Dependencies
-Any recent version of C++. The code was compiled with a C++20 compiler, but C++17 probably works as well.
+Any recent C++ compiler. The code was compiled with a C++20 compiler, but C++11,14, and 17 probably work as well.
 
 The `primesieve` library is used to generate primes quickly. For more information: [[primesieve on GitHub](https://github.com/kimwalisch/primesieve/)]
 To get `primesieve` on Ubuntu, use `apt install primesieve`
 
 ### Building and running
+`erdos` was authored on Ubuntu. It will probably work on macOS and Windows, but I haven't tried those platforms.
+
+#### Linux
 Building and running `erdos` is done by running the simple build script in the `cpp` directory:
-`cd cpp`
-`build.sh`
-`./erdos`
+```
+cd cpp
+sh build.sh
+./erdos
+```
 
 ### To-do list
 * Improve grid data format so that it is easier to interact with correctly
@@ -25,7 +30,7 @@ Building and running `erdos` is done by running the simple build script in the `
 * Improve speed of prime checks by eliminating some duplicate checks
 
 ## Python
-The Python script `visible_point_grid.py` has been translated from C++ code using ChatGPT, with some cleanup afterward. It uses the following libraries:
+The Python script `visible_point_grid.py` has been translated from the C++ code using ChatGPT, with some cleanup afterward. It uses the following libraries:
 * `primePy` to precompute primes
 * `numpy` to reshape the coordinate data for plotting
 * `matplotlib` to plot the grid
