@@ -1,0 +1,12 @@
+lean/.lake
+
+# Binary file
+cpp/erdos
+
+# Python virtual env
+python/bin
+python/include
+python/lib
+python/lib64
+python/share
+python/pyvenv.cfg
