@@ -6,3 +6,4 @@ cpp/erdos
 
 # Python virtual env
 .venv
+python/.venv
