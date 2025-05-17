@@ -32,11 +32,11 @@ sh build.sh
 ```
 
 ### To-do list
+* Put a visualization frontend on the program with a GUI (looking into `matplotlib-cpp` and `matplot++` libraries)
 * Improve design of grid data format so that it is easier to use and manipulate correctly
 * Write tests to support correctness in calculation
 * Fix (literal) edge case of failing to remove points on the left and bottom edges of the grid that lead nowhere
 * Design and write a backtracking algorithm to determine all possible paths given a grid spec
-* Put a visualization frontend on the program with a GUI (looking into `matplotlib-cpp` and `matplot++` libraries)
 
 ## Python
 The Python script `visible_point_grid.py` has been translated from the C++ code using ChatGPT, with some cleanup afterward. It uses the following libraries:
@@ -44,7 +44,9 @@ The Python script `visible_point_grid.py` has been translated from the C++ code 
 * `numpy` to reshape the coordinate data for plotting
 * `matplotlib` to plot the grid
 
-The Python script has plenty of room for performance improvement: it takes about 110 seconds to precompute primes up to 1,000,000 on my machine. On the other hand, it visualizes the grid with a nice GUI and should run in any Python environment. For smaller primes, it's definitely fast enough.
+The Python script has plenty of room for performance improvement: it takes about 110 seconds to precompute primes up to 1,000,000 on my machine.
+
+On the other hand, it visualizes the grid with a nice GUI and should run in any Python environment. And for precomputing smaller primes, it's definitely fast enough.
 
 ## Lean
 The Lean directory contains an attempt to have ChatGPT provide a proof of a solution to the problem. It wasn't successful, but the code has been saved as a curiosity.
