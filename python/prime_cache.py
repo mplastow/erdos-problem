@@ -6,18 +6,18 @@ import os
 import pickle
 from sympy import primerange
 
-"""
-Generate and return all prime numbers <= n.
-"""
 def generate_primes_up_to(n_max: int) -> set:
+    """
+    Generate and return all prime numbers <= n.
+    """
     return set(primerange(2, n_max + 1))
 
-"""
-Generate all semiprimes (products of two distinct primes) that are <= n.
-Assumption: Will only ever be called after `prime_set` has been pre-populated up to n,
-since it relies on the contents of prime_set
-"""
 def generate_distinct_semiprimes_up_to(n_max: int, primes: set[int]) -> set:
+    """
+    Generate all semiprimes (products of two distinct primes) that are <= n.
+    Assumption: Will only ever be called after `prime_set` has been pre-populated up to n,
+    since it relies on the contents of prime_set
+    """
     if primes is None:
         primes = load_or_generate_primes(n_max)
     primes_list = sorted(primes)
@@ -32,27 +32,27 @@ def generate_distinct_semiprimes_up_to(n_max: int, primes: set[int]) -> set:
             semiprimes.add(p1 * p2)
     return semiprimes
 
-"""
-Caches an object on disk
-"""
 def save_to_cache(obj, filename: str):
+    """
+    Caches an object on disk
+    """
     with open(filename, 'wb') as f:
         pickle.dump(obj, f)
 
-"""
-Loads an object from a cache on disk
-"""
 def load_from_cache(filename: str):
+    """
+    Loads an object from a cache on disk
+    """
     if os.path.exists(filename):
         with open(filename, 'rb') as f:
             return pickle.load(f)
     return None
 
-"""
-Load primes up to n_max from cache on disk (if a file with that exact value exists), or else
-Generate primes up to n_max and cache them on disk for faster lookup
-"""
 def load_or_generate_primes(n_max: int) -> set[int]:
+    """
+    Load primes up to n_max from cache on disk (if a file with that exact value exists), or else:
+    Generate primes up to n_max and cache them on disk for faster lookup
+    """
     prime_cache_path = f"primes_up_to_{n_max}.pkl"
     primes = load_from_cache(prime_cache_path)
     if primes is None:
@@ -60,17 +60,29 @@ def load_or_generate_primes(n_max: int) -> set[int]:
         save_to_cache(primes, prime_cache_path)
     return primes
 
-"""
-Load semiprimes up to n_max from cache on disk (if a file with that exact value exists), or else
-Generate semiprimes up to n_max and cache them on disk for faster lookup
-"""
-def load_or_generate_semiprimes(n: int, primes: set[int]) -> set[int]:
+def load_or_generate_distinct_semiprimes(n: int, primes: set[int]) -> set[int]:
+    """
+    Load semiprimes up to n_max from cache on disk (if a file with that exact value exists), or else
+    Generate semiprimes up to n_max and cache them on disk for faster lookup
+    """
     semiprime_cache_path = f"semiprimes_up_to_{n}.pkl"
     semiprimes = load_from_cache(semiprime_cache_path)
     if semiprimes is None:
         semiprimes = generate_distinct_semiprimes_up_to(n, primes)
         save_to_cache(semiprimes, semiprime_cache_path)
     return semiprimes
+
+def is_prime(num: int, primes: set[int]) -> bool:
+    """
+    Determines whether a number is prime. Uses a set of pregenerated primes for fast lookup.
+    """ 
+    return num in primes
+
+def is_distinct_semiprime(num: int, semiprimes: set[int]) -> bool:
+    """
+    Determines whether a number is semiprime. Uses a set of pregenerated semiprimes for fast lookup.
+    """
+    return num in semiprimes
 
 # Do nothing! This file contains an implementation of functions used elsewhere!
 sum = 1 + 1
