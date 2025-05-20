@@ -1,3 +1,4 @@
+# Lean
 lean/.lake
 
 # C++
@@ -7,3 +8,5 @@ cpp/erdos
 # Python virtual env
 .venv
 python/.venv
+python/__pycache__
+*.pkl
