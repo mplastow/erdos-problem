@@ -1,3 +1,7 @@
+# Implementation of prime and semiprime caches
+
+# Last edited by Matt Plastow on May 20, 2025
+
 import os
 import pickle
 from sympy import primerange
@@ -19,6 +23,8 @@ def generate_distinct_semiprimes_up_to(n_max: int, primes: set[int]) -> set:
     primes_list = sorted(primes)
     semiprimes = set()
     for i, p1 in enumerate(primes_list):
+        if p1 * p1 > n_max:
+            break
         max_p2 = n_max // p1
         for p2 in primes_list[i+1:]:
             if p2 > max_p2:
