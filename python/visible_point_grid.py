@@ -13,10 +13,10 @@ from prime_cache import (
 prime_set: set[int]
 semiprime_set: set[int]
 
-"""
-Specifies a grid.
-"""
 class GridSpec:
+    """
+    Specifies a grid.
+    """
     def __init__(self, min_x: int, min_y: int, max_x: int, max_y: int, dim_x: int, dim_y: int):
         self.min_x = min_x
         self.max_x = max_x
@@ -108,7 +108,8 @@ def plot_point_grid(grid: GridSpec, data: list[int]) -> None:
 
     # Plot visible points
     plt.figure(figsize = (10, 10))
-    plt.scatter(x_coords, y_coords, color = 'black', s = 6)
+    colors = np.where(y_coords in semiprime_set)
+    plt.scatter(x_coords, y_coords, color = colors, s = 11)
     plt.title('Visible points with no coprimes and no dead ends')
     plt.xlabel('x')
     plt.ylabel('y')
@@ -116,6 +117,63 @@ def plot_point_grid(grid: GridSpec, data: list[int]) -> None:
     plt.ylim(grid.min_y, grid.max_y + 1)
     plt.grid(False)
     plt.axis('equal')
+    plt.show()
+
+def plot_point_grid_color_semiprimes(grid: GridSpec, data: list[int], semiprime_set: set[int]) -> None:
+    """
+    Plots a grid of points, coloring those with x or y semiprime.
+    Shows coordinates on hover.
+    """
+    grid_array = np.array(data, dtype=np.uint8).reshape((grid.dim_y, grid.dim_x))
+    y_indices, x_indices = np.nonzero(grid_array)
+    x_coords = x_indices + grid.min_x
+    y_coords = y_indices + grid.min_y
+
+    colors = np.array([
+        'red' if (x in semiprime_set or y in semiprime_set) else 'gray'
+        for x, y in zip(x_coords, y_coords)
+    ])
+
+    fig, ax = plt.subplots(figsize=(10, 10))
+    scatter = ax.scatter(x_coords, y_coords, color=colors, s=20)
+    ax.set_title('Visible points with no coprimes and no dead ends')
+    ax.set_xlabel('x')
+    ax.set_ylabel('y')
+    ax.set_xlim(grid.min_x, grid.max_x + 1)
+    ax.set_ylim(grid.min_y, grid.max_y + 1)
+    ax.grid(False)
+    ax.axis('equal')
+
+    annot = ax.annotate("", xy=(0,0), xytext=(10,10), textcoords="offset points",
+                        bbox=dict(boxstyle="round", fc="w"),
+                        arrowprops=dict(arrowstyle="->"))
+    annot.set_visible(False)
+
+    # This function updates the annotation position and text
+    def update_annot(ind):
+        # ind is a dict with key 'ind' -> list of point indices under cursor
+        idx = ind["ind"][0]
+        pos = scatter.get_offsets()[idx]
+        annot.xy = pos
+        text = f"({int(pos[0])}, {int(pos[1])})"
+        annot.set_text(text)
+        annot.get_bbox_patch().set_alpha(0.8)
+
+
+    def hover(event):
+        vis = annot.get_visible()
+        if event.inaxes == ax:
+            cont, ind = scatter.contains(event)
+            if cont:
+                update_annot(ind)
+                annot.set_visible(True)
+                fig.canvas.draw_idle()
+            else:
+                if vis:
+                    annot.set_visible(False)
+                    fig.canvas.draw_idle()
+
+    fig.canvas.mpl_connect("motion_notify_event", hover)
     plt.show()
 
 # # # # # # # # # # # 
@@ -156,4 +214,4 @@ mark_coprimes(grid_spec, data)
 mark_deadends(grid_spec, data)
 
 # Finally, plot the grid of points
-plot_point_grid(grid_spec, data)
+plot_point_grid_color_semiprimes(grid_spec, data, semiprime_set)
