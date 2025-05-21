@@ -5,8 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from prime_cache import (
-    load_or_generate_primes,
-    load_or_generate_distinct_semiprimes
+    init_cache_primes,
+    init_cache_distinct_semiprimes,
+    is_prime,
+    is_distinct_semiprime
 )
 
 # Global variables
@@ -15,7 +17,7 @@ semiprime_set: set[int]
 
 class GridSpec:
     """
-    Specifies a grid.
+    Specifies a grid for use in this program.
     """
     def __init__(self, min_x: int, min_y: int, max_x: int, max_y: int, dim_x: int, dim_y: int):
         self.min_x = min_x
@@ -25,19 +27,6 @@ class GridSpec:
 
         self.dim_x = dim_x
         self.dim_y = dim_y
-
-def is_prime(num: int, primes: set[int]) -> bool:
-    """
-    Determines whether a number is prime. Uses a set of pregenerated primes for fast lookup.
-    """ 
-    return num in primes
-
-def is_distinct_semiprime(num: int, semiprimes: set[int]) -> bool:
-    """
-    Determines whether a number is semiprime. Uses a set of pregenerated semiprimes for fast lookup.
-    """
-    return num in semiprimes
-
 
 def is_visible(coord_x: int, coord_y: int) -> bool:
     """
@@ -136,7 +125,7 @@ def plot_point_grid_color_semiprimes(grid: GridSpec, data: list[int], semiprime_
 
     fig, ax = plt.subplots(figsize=(10, 10))
     scatter = ax.scatter(x_coords, y_coords, color=colors, s=20)
-    ax.set_title('Visible points with no coprimes and no dead ends')
+    ax.set_title('Visible points with no coprimes and no dead ends. Semiprimes are highlighted in red.')
     ax.set_xlabel('x')
     ax.set_ylabel('y')
     ax.set_xlim(grid.min_x, grid.max_x + 1)
@@ -182,23 +171,23 @@ def plot_point_grid_color_semiprimes(grid: GridSpec, data: list[int], semiprime_
 
 # The min and max values in the point grid.
 # Intervals in Python are right-open (e.g. max_x must be 51 to include x = 50)
-# EDIT:
+# EDIT HERE:
 min_x: int = 10000
 max_x: int = 10101
 min_y: int = 10000
 max_y: int = 10101
 
 # The max value to generate primes and semiprimes up to.
-# The default value of `10000000` will generate all primes and distinct semiprimes 
-# up to 10 million and cache them on disk for use in all subsequent checks.
-# EDIT:
-primes_semiprimes_max: int = 10000000
+# The default value of `1000000` will generate all primes and distinct semiprimes 
+# up to 1 million and cache them on disk for use in all subsequent checks.
+# EDIT HERE:
+primes_semiprimes_max: int = 1000000
 
 # Generate primes and semiprimes up to the max (above) and cache them on disk for faster lookup.
 # NOTE: These functions will write .pkl files to your environment. If you generate lots of these files,
 # you may want to delete them every once in a while to keep disk usage down.
-prime_set = load_or_generate_primes(primes_semiprimes_max)
-semiprime_set = load_or_generate_distinct_semiprimes(primes_semiprimes_max, prime_set)
+prime_set = init_cache_primes(primes_semiprimes_max)
+semiprime_set = init_cache_distinct_semiprimes(primes_semiprimes_max, prime_set)
 
 dim_x: int = max_x - min_x
 dim_y: int = max_y - min_y

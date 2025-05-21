@@ -47,22 +47,32 @@ The Python script `visible_point_grid.py` has been translated from the C++ code 
 * `numpy` to reshape the coordinate data for plotting
 * `matplotlib` to plot the grid
 
-#### Update: Prime generation has been vastly improved
-Generating primes now uses `sympy`, which is must faster than `primePy`. I'm able to generate primes up to 100 million in less than 2 minutes on my machine. As a bonus, I've included a function to generate distinct semiprimes, since they are relevant to this problem.
+**Update:** `visible_point_grid.py` now uses the prime and semiprime caches described below and features
+* highlighting of semiprime "avenues" and "streets"
+* on-hover coordinate labels
 
-Primes are automatically cached to disk with the `pickle` package. Now it's possible to ask for a huge number of primes to be generated, walk away and make a coffee, and have your primes ready to use when you return. You can then use the cached primes for all future tasks involving prime checking. For example, generating semiprimes relies on generating primes first. The `load_or_generate...()` functions in `prime_cache.py` do the hard work of checking the disk for a cache, then loading it if one is present, or generating it if one is absent.
+#### Update: Prime generation has been improved
+The `sympy` package is now used to generate primes much faster than `primePy`. I'm able to generate primes up to 100 million in less than 2 minutes on my machine.
 
-The suggested workflow for using this caching ability is the following:
-0. Install the `sympy` package with `pip install sympy`, `conda install sympy` etc.
-1. Put `prime_cache.py` in the same directory your working file or notebook.
-2. Copy the code from `example_prime_cache_basic.py` into your working file or notebook.
-3. Specify the max prime number to generate with `prime_semiprime_max = ...`
-4. Run the code you have so far to generate the primes and cache them. The cache will appear in your working directory as `primes_up_to_[n].pkl`.
-5. Write or generate code using the functions in the import statement.
+Primes are automatically cached to disk with the `pickle` package. You can start generating primes up to some huge number, walk away and make a coffee, and have your primes ready to use when you return. You can then use the cached primes for tasks involving prime checking in all future sessions. For example, generating semiprimes is much more efficient if a cache of primes is available for use.
 
-For example, the following prompt to ChatGPT...
-```I'd like to generate all sphenic numbers up to a number n. Write some Python code that does this efficiently. Assume I have an existing function is_prime(n: int) -> bool for prime checking and a primes: set[int] that already contains all primes needed for the task.```
-...generated a function for efficiently generating sphenic numbers using cached primes. It was able to generate sphenic numbers up to 10000 in a matter of seconds without any modification. See `example_prime_cache_sphenic_numbers.py`.
+#### Suggested workflow for incorporating prime caching into your project:
+
+0. Install the `sympy` package with `pip install sympy` (or the equivalent command for your Python environment manager)
+1. Put `prime_cache.py` in the same directory your notebook or script.
+2. Copy all the code from `example_prime_cache_basic.py` into your notebook or script.
+3. Specify the number `n` to generate primes up to with `prime_max = n` (I've used 1 million as a default since this only takes a second or two to run.)
+4. Run the code. This will generate the primes and cache them to a file in your working directory named `primes_up_to_n.pkl`. Calling `init_cache_primes(prime_max)` in future sessions will load this file instead of generating the primes again. (If the `.pkl` file is deleted or `n` is changed, it will generate the primes again.)
+5. Write or generate user code that uses the `primes` sets and the `is_prime` functions imported from `prime_cache.py`.
+
+For example, the following prompt to ChatGPT:
+
+```I'd like to generate all sphenic numbers up to a number n. Write some Python code that does this efficiently. Assume I have an existing function is_prime(n: int, primes: set[int]) -> bool for checking primes and a set primes: set[int] that already contains all primes needed for the task.```
+
+generated a function for generating sphenic numbers using cached primes. It was able to generate sphenic numbers up to 10000 in a few seconds without any modification. See `example_prime_cache_sphenic_numbers.py`.
+
+#### Semiprime generation
+I've included a function to generate and cache distinct semiprimes, since they are relevant to this problem. Generating semiprimes works the same as generating primes, described above. See `example_prime_cache_basic.py`.
 
 #### Testing the code
 The Python code now has a minimal suite of tests to guarantee correctness in prime and semiprime number generation. If you stumble upon a number that is missing from those sets (or a number that is erroneously included), please let me know so that I can fix the bug and add a test case.
