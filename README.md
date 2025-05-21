@@ -12,7 +12,7 @@ Note that there may be bugs since I've developed the algorithms for doing this t
 
 On the other hand, `erdos` doesn't do any visualization right now, aside from printing to the console. 
 
-The easiest way to interact with the program is by treating it like a script: edit the variables indicated by the `EDIT` comments in `main()`, then build and run.
+The easiest way to interact with the program is by treating it like a script: edit the variables indicated by the `EDIT HERE` comments in `main()`, then build and run.
 
 #### Update: Shifting focus to Python
 Since generating primes in Python is so fast now, I will probably not touch the C++ code in this repo unless we need to add features or algorithms that are unavoidably slow in Python.
@@ -50,6 +50,12 @@ The Python script `visible_point_grid.py` has been translated from the C++ code 
 **Update:** `visible_point_grid.py` now uses the prime and semiprime caches described below and features
 * highlighting of semiprime "avenues" and "streets"
 * on-hover coordinate labels
+
+**Usage:**
+
+1. Specify the min and max coordinates for the x- and y-axes in the grid. These variables are labeled with an `# EDIT HERE:` comment.
+2. Specify a number to generate primes and semiprimes up to for the cache if the default of 1 million is too small.
+3. Run the script to view the grid.
 
 #### Update: Prime generation has been improved
 The `sympy` package is now used to generate primes much faster than `primePy`. I'm able to generate primes up to 100 million in less than 2 minutes on my machine.
