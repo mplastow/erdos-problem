@@ -42,6 +42,9 @@ sh build.sh
 * Design and write a backtracking algorithm to determine all possible paths given a grid spec
 
 ## Python
+
+### `visible_point_grid.py`
+
 The Python script `visible_point_grid.py` has been translated from the C++ code using ChatGPT, with some cleanup afterward. It uses the following libraries:
 * `sympy` to precompute primes
 * `numpy` to reshape the coordinate data for plotting
@@ -52,12 +55,11 @@ The Python script `visible_point_grid.py` has been translated from the C++ code 
 * on-hover coordinate labels
 
 **Usage:**
-
 1. Specify the min and max coordinates for the x- and y-axes in the grid. These variables are labeled with an `# EDIT HERE:` comment.
 2. Specify a number to generate primes and semiprimes up to for the cache if the default of 1 million is too small.
 3. Run the script to view the grid.
 
-#### Update: Prime generation has been improved
+### Prime and semiprime generation and caching
 The `sympy` package is now used to generate primes much faster than `primePy`. I'm able to generate primes up to 100 million in less than 2 minutes on my machine.
 
 Primes are automatically cached to disk with the `pickle` package. You can start generating primes up to some huge number, walk away and make a coffee, and have your primes ready to use when you return. You can then use the cached primes for tasks involving prime checking in all future sessions. For example, generating semiprimes is much more efficient if a cache of primes is available for use.
@@ -80,7 +82,7 @@ generated a function for generating sphenic numbers using cached primes. It was 
 #### Semiprime generation
 I've included a function to generate and cache distinct semiprimes, since they are relevant to this problem. Generating semiprimes works the same as generating primes, described above. See `example_prime_cache_basic.py`.
 
-#### Testing the code
+### Testing the code
 The Python code now has a minimal suite of tests to guarantee correctness in prime and semiprime number generation. If you stumble upon a number that is missing from those sets (or a number that is erroneously included), please let me know so that I can fix the bug and add a test case.
 
 ## Lean
